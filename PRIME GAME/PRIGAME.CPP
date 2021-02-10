@@ -1,63 +1,61 @@
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <sstream>
-#include <fstream>
-#include <math.h>
-#include <stdio.h>
-#include <cmath>
-#include <cstdio>
-#include <vector>
-#include <algorithm>
 #include <bits/stdc++.h>
-
 using namespace std;
+#define m1 1000000007
+#define ll long long
+#define vi vector<int>
+#define mid(l, r) (l + (r - l) / 2)
+#define loop(i, a, b) for(int i = (a); i<= (b); i++)
+#define loopneg(i, a, b) for(int i = (a); i>= (b); i--)
+#define arint(n) int ar[n]
+
 const int MAX = 1000000;
 int prefix[MAX + 1];
 
-void buildPrefix() 
-{ 
-    bool prime[MAX + 1]; 
-    memset(prime, true, sizeof(prime)); 
-  
-    for (int p = 2; p * p <= MAX; p++) { 
-        if (prime[p] == true) { 
-            for (int i = p * 2; i <= MAX; i += p) 
-                prime[i] = false; 
-        } 
-    } 
-    prefix[0] = prefix[1] = 0; 
-    for (int p = 2; p <= MAX; p++) { 
-        prefix[p] = prefix[p - 1]; 
-        if (prime[p]) 
-            prefix[p]++; 
-    } 
-} 
- 
-int query(int L, int R) 
-{ 
-    return prefix[R] - prefix[L - 1]; 
-} 
-  
-int main() 
-{ 
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-    buildPrefix(); 
-    
-    int t;
-    cin>>t;
-    for(int g=0;g<t;g++)
+
+void sieve()
+{
+    bool prime[MAX + 1];
+    memset(prime, true, sizeof(prime));
+
+    for(int i = 2; i * i <= MAX; i++)
     {
-        long long int x,y;
-        cin>>x>>y;
-        int L = 1, R = x;
-        if((query(L, R))>y)
-        cout<<"Divyam"<<"\n";
-        else
-        cout<<"Chef"<<"\n";
+        if(prime[i] == true)
+        {
+            for(int j = i * 2; j<= MAX; j+= i)
+            {
+                prime[j] = false;
+            }
+        }
+    } 
+
+    prefix[0] = prefix[1] = 0;
+    for(int i = 2; i<= MAX; i++)
+    {
+        prefix[i] = prefix[i-1];
+        if(prime[i]) prefix[i]++;
     }
-  
-    return 0; 
-} 
+}
+
+int count_primes(int x)
+{
+    return prefix[x];
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+    
+    sieve();
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+	    ll x, y; cin>>x>>y;
+        if(count_primes(x) > y) cout<<"Divyam"<<"\n";
+        else cout<<"Chef"<<"\n";    
+	}
+	return 0;
+}
+
+
